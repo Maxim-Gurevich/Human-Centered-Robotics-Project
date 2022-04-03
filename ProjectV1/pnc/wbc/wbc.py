@@ -120,9 +120,13 @@ class WBC(object):
                 task.debug()
 
             ## TODO : Iterate through all tasks and construct cost_t_mat, cost_t_vec
-            #__import__('ipdb').set_trace()
-
-        cost_t_mat += self._lambda_q_ddot* self._mass_matrix  ## qddot regularization
+            ###__import__('ipdb').set_trace()
+####################################################################################
+            cost_t_mat = cost_t_mat + np.dot(w,np.dot(j.transpose(),j))
+            boop = np.array(j_dot_q_dot-x_ddot)
+            cost_t_vec = cost_t_vec + np.dot(w,np.dot(boop.transpose(),j))
+####################################################################################
+        cost_t_mat += self._lambda_q_ddot * self._mass_matrix  ## qddot regularization
 
         if contact_list is not None:
             uf_mat = np.array(
@@ -166,15 +170,21 @@ class WBC(object):
 
         if contact_list is not None:
             # TODO : Construct floating base dynamics constraint matrix
-            #__import__('ipdb').set_trace()
+            ###__import__('ipdb').set_trace()
             eq_mat = np.zeros(
                 (6, contact_jacobian.transpose().shape[1] + self._n_q_dot))
+            ########################################################################
+            eq_mat = np.concatenate((np.dot(self._sf,self._mass_matrix),-np.dot(self._sf,contact_jacobian.transpose())),axis=1)
+            #######################################################################
 
         else:
             eq_mat = np.dot(self._sf, self._mass_matrix)
         # TODO : Construct floating base dynamics constraint vector
-        #__import__('ipdb').set_trace()
+        ###__import__('ipdb').set_trace()
         eq_vec = np.zeros(6)
+        ####################################################################
+        eq_vec = -np.dot(self._sf,self._coriolis)-np.dot(self._sf,self._gravity)
+        ####################################################################
 
         # ======================================================================
         # Inequality Constraint
@@ -270,3 +280,4 @@ class WBC(object):
             self._data_saver.add('rf_cmd', sol_rf)
 
         return joint_trq_cmd, joint_acc_cmd, sol_rf
+

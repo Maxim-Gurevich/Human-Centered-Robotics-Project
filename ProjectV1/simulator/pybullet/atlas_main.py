@@ -58,6 +58,7 @@ if __name__ == "__main__":
                                  cameraYaw=120,
                                  cameraPitch=-30,
                                  cameraTargetPosition=[1, 0.5, 1.5])
+    p.configureDebugVisualizer(p.COV_ENABLE_GUI,0)  #hide menus
     p.setGravity(0, 0, -9.8)
     p.setPhysicsEngineParameter(fixedTimeStep=SimConfig.CONTROLLER_DT,
                                 numSubSteps=SimConfig.N_SUBSTEP)
@@ -87,9 +88,9 @@ if __name__ == "__main__":
         robotB, SimConfigB.INITIAL_POS_WORLD_TO_BASEJOINT,
         SimConfigB.INITIAL_QUAT_WORLD_TO_BASEJOINT, SimConfigB.PRINT_ROBOT_INFO)
 
-   # p.loadURDF(cwd + "/robot_model/bookcase/simplebox.urdf",
-  #             basePosition=[0, 0, 1],
-  #             baseOrientation=[0, 0, 0, 1])
+    p.loadURDF(cwd + "/robot_model/bookcase/simplebox.urdf",
+               basePosition=[0, 0, 2],
+               baseOrientation=[0, 0, 0, 1])
                
     # Initial Config
     set_initial_config(robot, joint_id)
@@ -157,7 +158,7 @@ if __name__ == "__main__":
         if SimConfig.PRINT_TIME:
             start_time = time.time()
         command = interface.get_command(copy.deepcopy(sensor_data))
-        command_b = interface_b.get_command(copy.deepcopy(sensor_data))
+        command_b = interface_b.get_command(copy.deepcopy(sensor_data_b))
 
         if SimConfig.PRINT_TIME:
             end_time = time.time()

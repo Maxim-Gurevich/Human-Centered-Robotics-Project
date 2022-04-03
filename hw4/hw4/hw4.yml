@@ -1,12 +1,13 @@
-name: ASE389
+name: hw4
 channels:
   - conda-forge
 dependencies:
+  - pip
   - pinocchio=2.5.5
   - python=3.9.1
   - pip:
       - certifi==2020.12.5
-      - conda-env-export==0.2.2
+      - conda-env-export==0.4.3
       - imageio==2.9.0
       - ipdb==0.13.4
       - matplotlib==3.3.4
@@ -19,4 +20,4 @@ dependencies:
       - tqdm==4.59.0
       - wheel==0.36.2
       - yapf==0.30.0
-prefix: /opt/anaconda3/envs/ASE389
+prefix: /opt/anaconda3/envs/hw4

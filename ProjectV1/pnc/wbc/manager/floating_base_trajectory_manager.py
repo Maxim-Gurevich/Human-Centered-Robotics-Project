@@ -21,7 +21,7 @@ class FloatingBaseTrajectoryManager(object):
                                             target_com_pos, target_base_quat):
         self._start_time = start_time
         self._duration = duration
-
+        #target_com_pos[2] = 1.02+.2
         self._ini_com_pos = self._robot.get_com_pos()
         self._target_com_pos = target_com_pos
 

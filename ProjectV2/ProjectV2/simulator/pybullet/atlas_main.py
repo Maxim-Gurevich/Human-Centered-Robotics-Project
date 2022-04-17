@@ -15,6 +15,7 @@ np.set_printoptions(precision=2)
 from config.atlas_config import SimConfig
 from config.atlas_config import SimConfigB
 from pnc.atlas_pnc.atlas_interface import AtlasInterface
+from pnc.atlas_pnc_b.atlas_interface import AtlasInterface as AtlasInterface_b
 from util import pybullet_util
 from util import util
 from util import liegroup
@@ -88,9 +89,9 @@ if __name__ == "__main__":
         robotB, SimConfigB.INITIAL_POS_WORLD_TO_BASEJOINT,
         SimConfigB.INITIAL_QUAT_WORLD_TO_BASEJOINT, SimConfigB.PRINT_ROBOT_INFO)
 
-    p.loadURDF(cwd + "/robot_model/bookcase/simplebox.urdf",
-               basePosition=[0, 0, 1.2],
-               baseOrientation=[0, 0, 0, 1])
+    #p.loadURDF(cwd + "/robot_model/bookcase/simplebox.urdf",
+          #     basePosition=[0, 0, 1.2],
+         #      baseOrientation=[0, 0, 0, 1])
                
     # Initial Config
     set_initial_config(robot, joint_id)
@@ -106,7 +107,7 @@ if __name__ == "__main__":
 
     # Construct Interface
     interface = AtlasInterface()
-    interface_b = AtlasInterface()
+    interface_b = AtlasInterface_b()
 
     # Run Sim
     t = 0
@@ -141,18 +142,25 @@ if __name__ == "__main__":
         keys = p.getKeyboardEvents()
         if pybullet_util.is_key_triggered(keys, '8'):
             interface.interrupt_logic.b_interrupt_button_eight = True
+            interface_b.interrupt_logic.b_interrupt_button_eight = True
         elif pybullet_util.is_key_triggered(keys, '5'):
             interface.interrupt_logic.b_interrupt_button_five = True
+            interface_b.interrupt_logic.b_interrupt_button_five = True
         elif pybullet_util.is_key_triggered(keys, '4'):
             interface.interrupt_logic.b_interrupt_button_four = True
+            interface_b.interrupt_logic.b_interrupt_button_four = True
         elif pybullet_util.is_key_triggered(keys, '2'):
             interface.interrupt_logic.b_interrupt_button_two = True
+            interface_b.interrupt_logic.b_interrupt_button_two = True
         elif pybullet_util.is_key_triggered(keys, '6'):
             interface.interrupt_logic.b_interrupt_button_six = True
+            interface_b.interrupt_logic.b_interrupt_button_four = True
         elif pybullet_util.is_key_triggered(keys, '7'):
             interface.interrupt_logic.b_interrupt_button_seven = True
+            interface_b.interrupt_logic.b_interrupt_button_seven = True
         elif pybullet_util.is_key_triggered(keys, '9'):
             interface.interrupt_logic.b_interrupt_button_nine = True
+            interface_b.interrupt_logic.b_interrupt_button_nine = True
 
         # Compute Command
         if SimConfig.PRINT_TIME:

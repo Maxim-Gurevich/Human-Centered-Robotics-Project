@@ -42,15 +42,19 @@ class PnCConfig(object):
 
 
 class WBCConfig(object):
+    VERBOSE = False
+
     # Max normal force per contact
-    RF_Z_MAX = 2000.0
+    RF_Z_MAX = 2000.
 
     # Task Hierarchy Weights
     W_COM = 10.0
     W_PELVIS = 20.0
-    W_UPPER_BODY = 20.0
+    W_UPPER_BODY = 0.1
     W_CONTACT_FOOT = 60.0
     W_SWING_FOOT = 40.0
+    W_HAND_POS_MIN = 0.
+    W_HAND_POS_MAX = 50.
 
     # Task Gains
     KP_COM = np.array([100., 100., 100])
@@ -61,6 +65,9 @@ class WBCConfig(object):
 
     KP_UPPER_BODY = 100.
     KD_UPPER_BODY = 10.
+
+    KP_HAND_POS = np.array([70., 70., 70.])
+    KD_HAND_POS = np.array([5., 5., 5.])
 
     KP_FOOT_POS = np.array([400., 400., 400.])
     KD_FOOT_POS = np.array([40., 40., 40.])
@@ -77,6 +84,7 @@ class WBCConfig(object):
     VEL_CUTOFF_FREQ = 2.0  #Hz
     POS_CUTOFF_FREQ = 1.0  #Hz
     MAX_POS_ERR = 0.2  #Radians
+
 
 
 class WalkingConfig(object):
@@ -97,7 +105,18 @@ class WalkingConfig(object):
     NOMINAL_FORWARD_STEP = 0.15
     NOMINAL_BACKWARD_STEP = -0.15
     NOMINAL_TURN_RADIANS = np.pi / 6
-    NOMINAL_STRAFE_DISTANCE = 0.05
+    NOMINAL_STRAFE_DISTANCE = 0.1
+    T_TRANS_DURATION = 1
+    T_REACHING_DURATION = 3.
+    BLUE_CAN = np.array([0.7, 0.03, 0.72])
+    RED_CAN = np.array([0.7, 0.65, 1.1])
+    RH_TARGET_POS = np.array([0.62, -0.54,
+                              0.96])  # initial: [0.42, -0.54, 0.96]
+    LH_TARGET_POS = np.array([0.52, 0.54, 0.96])  # initial: [0.41, 0.53, 0.96]
+    # LH_TARGET_POS = np.copy(BLUE_CAN)
+    LH_TARGET_POS = np.copy(RED_CAN)
+    RH_TARGET_POS = np.copy(RED_CAN) + np.array([0., 0.1, -0.04])
+    # RH_TARGET_POS = np.copy(RED_CAN) + np.array([0., 0., -0.04])
 
 
 class WalkingState(object):
@@ -109,3 +128,5 @@ class WalkingState(object):
     LF_CONTACT_TRANS_START = 5
     LF_CONTACT_TRANS_END = 6
     LF_SWING = 7
+    RH_HANDREACH = 8
+    LH_HANDREACH = 9

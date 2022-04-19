@@ -70,10 +70,10 @@ class AtlasControlArchitecture(ControlArchitecture):
             ###########################################################
             #
         self._lhand_tm = HandTrajectoryManager(
-            self._tci_container.lhand_pos_task, None, robot)
+            self._taf_container.lhand_pos_task, None, robot)
         self._rhand_tm = HandTrajectoryManager(
-            self._tci_container.rhand_pos_task, None, robot)
-            #
+            self._taf_container.rhand_pos_task, None, robot)
+        #    #
             ###########################################################
         self._trajectory_managers = {
             "rfoot": self._rfoot_tm,
@@ -105,11 +105,11 @@ class AtlasControlArchitecture(ControlArchitecture):
             ###################################
             #
         self._lhand_pos_hm = TaskHierarchyManager(
-            self._tci_container.lhand_pos_task, WBCConfig.W_HAND_POS_MAX,
-            WBCConfig.W_HAND_POS_MIN)
+            self._taf_container.lhand_pos_task, WBCConfig.W_HAND_POS_MAX,
+            WBCConfig.W_HAND_POS_MIN, robot)
         self._rhand_pos_hm = TaskHierarchyManager(
-            self._tci_container.rhand_pos_task, WBCConfig.W_HAND_POS_MAX,
-            WBCConfig.W_HAND_POS_MIN)
+            self._taf_container.rhand_pos_task, WBCConfig.W_HAND_POS_MAX,
+            WBCConfig.W_HAND_POS_MIN, robot)
             #
             ###################################
         self._hierarchy_managers = {
@@ -118,10 +118,10 @@ class AtlasControlArchitecture(ControlArchitecture):
             "rfoot_ori": self._rfoot_ori_hm,
             "lfoot_ori": self._lfoot_ori_hm,
             ####################################
-            #
+            
             "lhand_pos": self._lhand_pos_hm,
             "rhand_pos": self._rhand_pos_hm,
-            #
+            
             ####################################
         }
 

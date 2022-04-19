@@ -18,8 +18,12 @@ from pnc.atlas_pnc.atlas_state_machine.contact_transition_start import ContactTr
 from pnc.atlas_pnc.atlas_state_machine.contact_transition_end import ContactTransitionEnd
 from pnc.atlas_pnc.atlas_state_machine.single_support_swing import SingleSupportSwing
 from pnc.atlas_pnc.atlas_state_provider import AtlasStateProvider
-
-
+##########################################################
+#
+from pnc.wbc.manager.hand_trajectory_manager import HandTrajectoryManager
+from pnc.atlas_pnc.atlas_state_machine.double_support_hand_reaching import DoubleSupportHandReach
+#
+##########################################################
 class AtlasControlArchitecture(ControlArchitecture):
     def __init__(self, robot):
         super(AtlasControlArchitecture, self).__init__(robot)
@@ -63,13 +67,26 @@ class AtlasControlArchitecture(ControlArchitecture):
         self._dcm_tm.nominal_backward_step = WalkingConfig.NOMINAL_BACKWARD_STEP
         self._dcm_tm.nominal_turn_radians = WalkingConfig.NOMINAL_TURN_RADIANS
         self._dcm_tm.nominal_strafe_distance = WalkingConfig.NOMINAL_STRAFE_DISTANCE
-
+            ###########################################################
+            #
+        self._lhand_tm = HandTrajectoryManager(
+            self._tci_container.lhand_pos_task, None, robot)
+        self._rhand_tm = HandTrajectoryManager(
+            self._tci_container.rhand_pos_task, None, robot)
+            #
+            ###########################################################
         self._trajectory_managers = {
             "rfoot": self._rfoot_tm,
             "lfoot": self._lfoot_tm,
             "upper_body": self._upper_body_tm,
             "floating_base": self._floating_base_tm,
-            "dcm": self._dcm_tm
+            "dcm": self._dcm_tm,
+            ################################
+            #
+            "lhand": self._lhand_tm,
+            "rhand": self._rhand_tm
+            #
+            ################################
         }
 
         # Initialize Hierarchy Manager
@@ -85,11 +102,27 @@ class AtlasControlArchitecture(ControlArchitecture):
         self._lfoot_ori_hm = TaskHierarchyManager(
             self._taf_container.lfoot_ori_task, WBCConfig.W_CONTACT_FOOT,
             WBCConfig.W_SWING_FOOT, robot)
+            ###################################
+            #
+        self._lhand_pos_hm = TaskHierarchyManager(
+            self._tci_container.lhand_pos_task, WBCConfig.W_HAND_POS_MAX,
+            WBCConfig.W_HAND_POS_MIN)
+        self._rhand_pos_hm = TaskHierarchyManager(
+            self._tci_container.rhand_pos_task, WBCConfig.W_HAND_POS_MAX,
+            WBCConfig.W_HAND_POS_MIN)
+            #
+            ###################################
         self._hierarchy_managers = {
             "rfoot_pos": self._rfoot_pos_hm,
             "lfoot_pos": self._lfoot_pos_hm,
             "rfoot_ori": self._rfoot_ori_hm,
-            "lfoot_ori": self._lfoot_ori_hm
+            "lfoot_ori": self._lfoot_ori_hm,
+            ####################################
+            #
+            "lhand_pos": self._lhand_pos_hm,
+            "rhand_pos": self._rhand_pos_hm,
+            #
+            ####################################
         }
 
         # Initialize Reaction Force Manager
@@ -144,6 +177,38 @@ class AtlasControlArchitecture(ControlArchitecture):
         self._state_machine[WalkingState.RF_SWING] = SingleSupportSwing(
             WalkingState.RF_SWING, self._trajectory_managers,
             Footstep.RIGHT_SIDE, self._robot)
+        ##############################################
+        #
+        self._state_machine[
+            WalkingState.RH_HANDREACH] = DoubleSupportHandReach(
+                WalkingState.RH_HANDREACH, self._trajectory_managers,
+                self._hierarchy_managers, self._reaction_force_managers,
+                self._robot)
+        self._state_machine[
+            WalkingState.
+            RH_HANDREACH].moving_duration = WalkingConfig.T_REACHING_DURATION
+        self._state_machine[
+            WalkingState.
+            RH_HANDREACH].rh_target_pos = WalkingConfig.RH_TARGET_POS
+        self._state_machine[
+            WalkingState.
+            RH_HANDREACH].trans_duration = WalkingConfig.T_TRANS_DURATION
+        self._state_machine[
+            WalkingState.LH_HANDREACH] = DoubleSupportHandReach(
+                WalkingState.LH_HANDREACH, self._trajectory_managers,
+                self._hierarchy_managers, self._reaction_force_managers,
+                self._robot)
+        self._state_machine[
+            WalkingState.
+            LH_HANDREACH].moving_duration = WalkingConfig.T_REACHING_DURATION
+        self._state_machine[
+            WalkingState.
+            LH_HANDREACH].lh_target_pos = WalkingConfig.LH_TARGET_POS
+        self._state_machine[
+            WalkingState.
+            LH_HANDREACH].trans_duration = WalkingConfig.T_TRANS_DURATION
+        #
+        ##################################################################
 
         # Set Starting State
         self._state = WalkingState.STAND

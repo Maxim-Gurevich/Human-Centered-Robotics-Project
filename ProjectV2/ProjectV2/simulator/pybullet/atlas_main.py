@@ -89,9 +89,9 @@ if __name__ == "__main__":
         robotB, SimConfigB.INITIAL_POS_WORLD_TO_BASEJOINT,
         SimConfigB.INITIAL_QUAT_WORLD_TO_BASEJOINT, SimConfigB.PRINT_ROBOT_INFO)
 
-    #p.loadURDF(cwd + "/robot_model/bookcase/simplebox.urdf",
-          #     basePosition=[0, 0, 1.2],
-         #      baseOrientation=[0, 0, 0, 1])
+    p.loadURDF(cwd + "/robot_model/bookcase/simplebox.urdf",
+               basePosition=[0, 0, 1.2],
+               baseOrientation=[0, 0, 0, 1])
                
     # Initial Config
     set_initial_config(robot, joint_id)

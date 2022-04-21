@@ -118,10 +118,10 @@ class AtlasControlArchitecture(ControlArchitecture):
             "rfoot_ori": self._rfoot_ori_hm,
             "lfoot_ori": self._lfoot_ori_hm,
             ####################################
-            
+            #
             "lhand_pos": self._lhand_pos_hm,
             "rhand_pos": self._rhand_pos_hm,
-            
+            #
             ####################################
         }
 

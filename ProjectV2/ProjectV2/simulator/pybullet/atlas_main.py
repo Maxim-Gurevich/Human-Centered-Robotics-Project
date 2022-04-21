@@ -89,9 +89,9 @@ if __name__ == "__main__":
         robotB, SimConfigB.INITIAL_POS_WORLD_TO_BASEJOINT,
         SimConfigB.INITIAL_QUAT_WORLD_TO_BASEJOINT, SimConfigB.PRINT_ROBOT_INFO)
 
-    p.loadURDF(cwd + "/robot_model/bookcase/simplebox.urdf",
-               basePosition=[0, 0, 1.2],
-               baseOrientation=[0, 0, 0, 1])
+    #p.loadURDF(cwd + "/robot_model/bookcase/simplebox.urdf",
+    #           basePosition=[0, 0, 1.2],
+    #           baseOrientation=[0, 0, 0, 1])
                
     # Initial Config
     set_initial_config(robot, joint_id)
@@ -161,6 +161,12 @@ if __name__ == "__main__":
         elif pybullet_util.is_key_triggered(keys, '9'):
             interface.interrupt_logic.b_interrupt_button_nine = True
             interface_b.interrupt_logic.b_interrupt_button_nine = True
+        elif pybullet_util.is_key_triggered(keys, '1'):
+            interface.interrupt_logic.b_interrupt_button_one = True
+            interface_b.interrupt_logic.b_interrupt_button_one = True
+        elif pybullet_util.is_key_triggered(keys, '3'):
+            interface.interrupt_logic.b_interrupt_button_three = True
+            interface_b.interrupt_logic.b_interrupt_button_three = True
 
         # Compute Command
         if SimConfig.PRINT_TIME:

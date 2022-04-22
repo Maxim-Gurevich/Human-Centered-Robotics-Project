@@ -111,11 +111,11 @@ class WalkingConfig(object):
     BLUE_CAN = np.array([0.7, 0.03, 0.72])
     RED_CAN = np.array([0.7, 0.65, 1.1])
     RH_TARGET_POS = np.array([0.62, -0.54,
-                              0.96])  # initial: [0.42, -0.54, 0.96]
-    LH_TARGET_POS = np.array([0.52, 0.54, 0.96])  # initial: [0.41, 0.53, 0.96]
+                              3])  # initial: [0.42, -0.54, 0.96]
+    LH_TARGET_POS = np.array([0.52, 0.54, 3])  # initial: [0.41, 0.53, 0.96]
     # LH_TARGET_POS = np.copy(BLUE_CAN)
-    LH_TARGET_POS = np.copy(RED_CAN)
-    RH_TARGET_POS = np.copy(RED_CAN) + np.array([0., 0.1, -0.04])
+    #LH_TARGET_POS = np.copy(RED_CAN)
+    #RH_TARGET_POS = np.copy(RED_CAN) + np.array([0., 0.1, -0.04])
     # RH_TARGET_POS = np.copy(RED_CAN) + np.array([0., 0., -0.04])
 
 

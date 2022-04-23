@@ -50,7 +50,7 @@ class WBCConfig(object):
     # Task Hierarchy Weights
     W_COM = 10.0
     W_PELVIS = 20.0
-    W_UPPER_BODY = 0.1
+    W_UPPER_BODY = .1
     W_CONTACT_FOOT = 60.0
     W_SWING_FOOT = 40.0
     W_HAND_POS_MIN = 0.
@@ -63,7 +63,7 @@ class WBCConfig(object):
     KP_PELVIS = np.array([100., 100., 100])
     KD_PELVIS = np.array([10., 10., 10.])
 
-    KP_UPPER_BODY = 100.
+    KP_UPPER_BODY = 150.
     KD_UPPER_BODY = 10.
 
     KP_HAND_POS = np.array([70., 70., 70.])

@@ -1,0 +1,28 @@
+<robot name="simple_box">
+  <link name="box">
+    <inertial>
+      <mass value="30.0" />
+      <inertia  ixx="1.0" ixy="0.0"  ixz="0.0"  iyy="1.0"  iyz="0.0"  izz="1.0" />
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="1.2 1.2 .1" />
+      </geometry>
+      <material name = "red">
+	     	<color rgba="1 0.1 0 1"/>
+	  	</material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="1.2 1.2 .1" />
+      </geometry>
+      <surface>
+        <friction>
+          <ode>
+            <mu>100000.0</mu>
+          </ode>
+        </friction>
+      </surface>
+    </collision>
+  </link>
+</robot>

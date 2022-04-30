@@ -60,7 +60,7 @@ class WBCConfig(object):
     KP_COM = np.array([100., 100., 100])
     KD_COM = np.array([10., 10., 10.])
 
-    KP_PELVIS = np.array([100., 100., 100])
+    KP_PELVIS = np.array([200., 200., 200])
     KD_PELVIS = np.array([10., 10., 10.])
 
     KP_UPPER_BODY = 150.

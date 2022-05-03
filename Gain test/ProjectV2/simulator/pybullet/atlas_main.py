@@ -89,7 +89,7 @@ if __name__ == "__main__":
         robotB, SimConfigB.INITIAL_POS_WORLD_TO_BASEJOINT,
         SimConfigB.INITIAL_QUAT_WORLD_TO_BASEJOINT, SimConfigB.PRINT_ROBOT_INFO)
 
-    p.loadURDF(cwd + "/robot_model/bookcase/simplebox.urdf",
+    simplebox = p.loadURDF(cwd + "/robot_model/bookcase/simplebox.urdf",
                basePosition=[0, 0, 1.2],
                baseOrientation=[0, 0, 0, 1])
                
@@ -113,7 +113,8 @@ if __name__ == "__main__":
     t = 0
     dt = SimConfig.CONTROLLER_DT
     count = 0
-
+    graphtime = []
+    object_pos = []
     while (1):
 
         # Get SensorData
@@ -127,7 +128,30 @@ if __name__ == "__main__":
         sensor_data_b = pybullet_util.get_sensor_data(robotB, joint_id_b, link_id_b,
                                                     pos_basejoint_to_basecom_b,
                                                     rot_basejoint_to_basecom_b)
-
+                                                    
+        #################################################################################
+        #OBJECT POSITION
+                                              
+        sensor_data_o = p.getBasePositionAndOrientation(simplebox)
+        graphtime.append(count/100)
+        object_pos.append(sensor_data_o(2))
+        fig, axs = plt.subplots(2,1)
+            axs[0].plot(graphtime, object_pos)
+            axs[0].set_ylabel('Position (m)')
+            axs[0].legend(['x', 'y'])
+            axs[0].grid(True)
+            
+            axs[1].plot(graphtime, object_pos)
+            axs[1].set_xlabel('Time (s)')
+            axs[1].set_ylabel('Angle (rad)')
+            axs[1].legend(['theta'])
+            axs[1].grid(True)
+            plt.show()
+            
+            if count == 100
+                break
+        #################################################################################
+        
         rf_height = pybullet_util.get_link_iso(robot, link_id['r_sole'])[2, 3]
         lf_height = pybullet_util.get_link_iso(robot, link_id['l_sole'])[2, 3]
         sensor_data['b_rf_contact'] = True if rf_height <= 0.01 else False

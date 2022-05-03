@@ -1,6 +1,8 @@
 import numpy as np
 from util import util
 from util import interpolation
+import pybullet as p
+#from atlas_main import sensor_data_o
 
 
 class HandTrajectoryManager(object):
@@ -16,6 +18,7 @@ class HandTrajectoryManager(object):
 
         self._start_moving_time = 0.
         self._moving_duration = 0.
+        self._object_pos = 0.
 
         # self._pos_hermite_curve = None
         self._init_hand_pos = np.zeros(3)
@@ -24,7 +27,11 @@ class HandTrajectoryManager(object):
         self._keypoint_pos = np.zeros(3)
 
     def update_desired(self, target_hand_iso):
-        hand_pos_des = target_hand_iso[0:3, 3]
+    ###################################################################
+        hand_pos_com = target_hand_iso[0:3, 3]
+        hand_pos_des = sensor_data_o
+        print(sensor_data_o)
+    ###################################################################
         hand_vel_des = np.zeros(3)
         hand_acc_des = np.zeros(3)
 
@@ -100,11 +107,13 @@ class HandTrajectoryManager(object):
         # hand_acc_des = self._pos_hermite_curve.evaluate_second_derivative(s)
         hand_pos_des, hand_vel_des, hand_acc_des = np.zeros(3), np.zeros(
             3), np.zeros(3)
-
+        ######################################
+        print(self._object_pos)
+        #########################################
         for i in range(3):
-            hand_pos_des[i] = interpolation.smooth_changing(
-                self._init_hand_pos[i], self._target_hand_pos[i],
-                self._moving_duration, current_time - self._start_moving_time)
+            hand_pos_des[i] = self._object_pos#interpolation.smooth_changing(
+                #self._init_hand_pos[i], self._target_hand_pos[i],
+                #self._moving_duration, current_time - self._start_moving_time)
             hand_vel_des[i] = interpolation.smooth_changing_vel(
                 self._init_hand_pos[i], self._target_hand_pos[i],
                 self._moving_duration, current_time - self._start_moving_time)
@@ -171,3 +180,6 @@ class HandTrajectoryManager(object):
         if self._ori_task is not None:
             self._ori_task.update_desired(hand_quat_des, hand_ang_vel_des,
                                           hand_ang_acc_des)
+                                          
+    def object_pos(self, value):
+        self._object_pos = value

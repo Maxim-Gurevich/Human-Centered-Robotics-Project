@@ -78,6 +78,10 @@ if __name__ == "__main__":
     robotB = p.loadURDF(cwd + "/robot_model/atlas/atlas.urdf",
                         SimConfigB.INITIAL_POS_WORLD_TO_BASEJOINT,
                         SimConfigB.INITIAL_QUAT_WORLD_TO_BASEJOINT)
+                        
+    simplebox = p.loadURDF(cwd + "/robot_model/bookcase/simplebox.urdf",
+               basePosition=[0, 0, 1.2],
+               baseOrientation=[0, 0, 0, 1])
 
     p.loadURDF(cwd + "/robot_model/ground/plane.urdf", [0, 0, 0])
     p.configureDebugVisualizer(p.COV_ENABLE_RENDERING, 1)
@@ -87,11 +91,13 @@ if __name__ == "__main__":
         
     nq_b, nv_b, na_b, joint_id_b, link_id_b, pos_basejoint_to_basecom_b, rot_basejoint_to_basecom_b = pybullet_util.get_robot_config(
         robotB, SimConfigB.INITIAL_POS_WORLD_TO_BASEJOINT,
-        SimConfigB.INITIAL_QUAT_WORLD_TO_BASEJOINT, SimConfigB.PRINT_ROBOT_INFO)
+        SimConfigB.INITIAL_QUAT_WORLD_TO_BASEJOINT, True)#SimConfigB.PRINT_ROBOT_INFO)
+        
+    nq_o, nv_o, na_o, joint_id_o, link_id_o, pos_basejoint_to_basecom_o, rot_basejoint_to_basecom_o = pybullet_util.get_robot_config(
+        simplebox, [0, 0, 1.2],
+        [0, 0, 0, 1], True)
 
-    p.loadURDF(cwd + "/robot_model/bookcase/simplebox.urdf",
-               basePosition=[0, 0, 1.2],
-               baseOrientation=[0, 0, 0, 1])
+    
                
     # Initial Config
     set_initial_config(robot, joint_id)
@@ -127,7 +133,11 @@ if __name__ == "__main__":
         sensor_data_b = pybullet_util.get_sensor_data(robotB, joint_id_b, link_id_b,
                                                     pos_basejoint_to_basecom_b,
                                                     rot_basejoint_to_basecom_b)
+                                                    
+        sensor_data_o = p.getBasePositionAndOrientation(simplebox)
 
+        rh_pos = pybullet_util.get_link_iso(robot, link_id['r_hand'])[0:3,3]
+        
         rf_height = pybullet_util.get_link_iso(robot, link_id['r_sole'])[2, 3]
         lf_height = pybullet_util.get_link_iso(robot, link_id['l_sole'])[2, 3]
         sensor_data['b_rf_contact'] = True if rf_height <= 0.01 else False
@@ -142,7 +152,7 @@ if __name__ == "__main__":
         keys = p.getKeyboardEvents()
         if pybullet_util.is_key_triggered(keys, '8'):
             interface.interrupt_logic.b_interrupt_button_eight = True
-            interface_b.interrupt_logic.b_interrupt_button_eight = True
+            interface_b.interrupt_logic.b_interrupt_button_two = True
         elif pybullet_util.is_key_triggered(keys, '5'):
             interface.interrupt_logic.b_interrupt_button_five = True
             interface_b.interrupt_logic.b_interrupt_button_five = True

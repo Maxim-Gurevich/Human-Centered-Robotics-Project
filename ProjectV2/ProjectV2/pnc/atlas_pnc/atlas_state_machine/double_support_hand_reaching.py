@@ -13,8 +13,9 @@ class DoubleSupportHandReach(StateMachine):
         self._hierarchy_managers = hm
         self._force_managers = fm
         self._sp = AtlasStateProvider()
-        self._start_time = 0.
-        self._moving_duration = 0.
+        self._start_time = self._sp.curr_time
+        self._moving_duration = 1
+        self._end_time=self._start_time + self._moving_duration
         self._trans_duration = 0.
         self._rh_target_pos = np.zeros(3)
         self._lh_target_pos = np.zeros(3)
@@ -70,10 +71,13 @@ class DoubleSupportHandReach(StateMachine):
         pass
 
     def end_of_state(self):
-        pass
+        if self._state_machine_time >= self._end_time:
+            return True
+        else:
+            return False
 
     def get_next_state(self):
-        pass
+        return WalkingState.BALANCE
 
     @property
     def moving_duration(self):

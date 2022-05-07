@@ -49,6 +49,9 @@ class FloatingBaseTrajectoryManager(object):
             com_acc_des[i] = interpolation.smooth_changing_acc(
                 self._ini_com_pos[i], self._target_com_pos[i], self._duration,
                 current_time - self._start_time)
+        #com_pos_des[0]=com_pos_des[0]/2
+        #com_vel_des[0]=com_vel_des[0]/4
+        #com_acc_des[0]=com_acc_des[0]/8
 
         self._com_task.update_desired(com_pos_des, com_vel_des, com_acc_des)
 

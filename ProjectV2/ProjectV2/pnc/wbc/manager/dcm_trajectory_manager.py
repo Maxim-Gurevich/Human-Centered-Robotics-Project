@@ -275,6 +275,8 @@ class DCMTrajectoryManager(object):
         mf_stance = copy.deepcopy(self._mf_stance)
 
         robot_side = Footstep.LEFT_SIDE
+        #if forward_distance < 0:
+        #    robot_side = Footstep.RIGHT_SIDE
         for i in range(num_steps):
             if robot_side == Footstep.LEFT_SIDE:
                 translate = np.array([(i + 1) * forward_distance,

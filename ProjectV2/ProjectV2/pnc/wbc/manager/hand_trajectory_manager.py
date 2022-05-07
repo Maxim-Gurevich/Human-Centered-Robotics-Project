@@ -104,6 +104,7 @@ class HandTrajectoryManager(object):
             3), np.zeros(3)
         ######################################
         #print(object_pos)
+        object_pos[0]=0
         object_pos1=object_pos+self._target_hand_pos
         object_pos1[2] = self._target_hand_pos[2];
         #########################################

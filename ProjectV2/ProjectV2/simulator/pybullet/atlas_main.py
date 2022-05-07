@@ -82,7 +82,7 @@ if __name__ == "__main__":
                         SimConfigB.INITIAL_QUAT_WORLD_TO_BASEJOINT)
                         
     simplebox = p.loadURDF(cwd + "/robot_model/bookcase/simplebox.urdf",
-               basePosition=[0, 0, 2],#1.1],
+               basePosition=[0, 0, .6],#1.1],
                baseOrientation=[0, 0, 0, 1])
 
     p.loadURDF(cwd + "/robot_model/ground/plane.urdf", [0, 0, 0])
@@ -123,7 +123,7 @@ if __name__ == "__main__":
     count = 0
     graphtime = []
     graph_object_pos = []
-
+    move_trigger = False
     while (1):
 
         # Get SensorData
@@ -161,7 +161,6 @@ if __name__ == "__main__":
             break
         #################################################################################
         
-
         rh_pos = pybullet_util.get_link_iso(robot, link_id['r_hand'])[0:3,3]
         
         rf_height = pybullet_util.get_link_iso(robot, link_id['r_sole'])[2, 3]
@@ -177,8 +176,9 @@ if __name__ == "__main__":
         # Get Keyboard Event
         keys = p.getKeyboardEvents()
         if pybullet_util.is_key_triggered(keys, '8'):
-            interface.interrupt_logic.b_interrupt_button_eight = True
             interface_b.interrupt_logic.b_interrupt_button_two = True
+            current_count=count
+            move_trigger=True
         elif pybullet_util.is_key_triggered(keys, '5'):
             interface.interrupt_logic.b_interrupt_button_five = True
             interface_b.interrupt_logic.b_interrupt_button_five = True
@@ -204,6 +204,9 @@ if __name__ == "__main__":
             interface.interrupt_logic.b_interrupt_button_three = True
             interface_b.interrupt_logic.b_interrupt_button_three = True
 
+        if move_trigger and count-current_count>50:
+            interface.interrupt_logic.b_interrupt_button_eight = True
+            move_trigger = False
         # Compute Command
         if SimConfig.PRINT_TIME:
             start_time = time.time()

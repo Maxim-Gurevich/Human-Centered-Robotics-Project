@@ -93,7 +93,7 @@ dcm_planner.t_ds = 0.45
 dcm_planner.t_ss = 0.75
 dcm_planner.percentage_settle = 0.9
 dcm_planner.alpha_ds = 0.5
-dcm_planner.robot_mass = 100.
+dcm_planner.robot_mass = 100
 dcm_planner.z_vrp = 0.765
 
 lf_stance = Footstep()
